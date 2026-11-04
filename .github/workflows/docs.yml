@@ -2,7 +2,7 @@ name: Docs
 on:
   push:
     branches: [main]
-    paths: [docs/**, mkdocs.yml, src/**, HISTORY.md]
+    paths: [docs/**, mkdocs.yml, src/**, CHANGELOG.md]
   workflow_dispatch:
 permissions:
   contents: read

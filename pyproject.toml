@@ -1,6 +1,6 @@
 [project]
 name = "frame2text4llm"
-dynamic = ["version"]
+version = "0.1.0"
 description = "Read the subtitles burned into a video with OCR, and cut the audio under each one, to build speech and text datasets."
 readme = "README.md"
 license = "MIT"
@@ -47,20 +47,17 @@ all = ["frame2text4llm[easyocr,paddle,vlm,openai]"]
 [project.urls]
 Homepage = "https://github.com/BurkimbIA/Frame2Text4LLM"
 Issues = "https://github.com/BurkimbIA/Frame2Text4LLM/issues"
-Changelog = "https://github.com/BurkimbIA/Frame2Text4LLM/blob/main/HISTORY.md"
+Changelog = "https://github.com/BurkimbIA/Frame2Text4LLM/blob/main/CHANGELOG.md"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[tool.hatch.version]
-path = "src/frame2text4llm/package_metadata.py"
-
 [tool.hatch.build.targets.wheel]
 packages = ["src/frame2text4llm"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src/frame2text4llm", "tests", "README.md", "HISTORY.md", "LICENSE"]
+include = ["src/frame2text4llm", "tests", "README.md", "CHANGELOG.md", "LICENSE"]
 
 [dependency-groups]
 dev = ["pytest>=7.4.0"]

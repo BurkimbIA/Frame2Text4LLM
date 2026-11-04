@@ -1,6 +1,6 @@
 name: Publish to PyPI
 on:
-  workflow_dispatch:  # run by hand, once the version and HISTORY.md are updated
+  workflow_dispatch:  # run by hand, once the release PR is merged (RELEASE.md)
 permissions:
   contents: read
 jobs:

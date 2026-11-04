@@ -63,8 +63,7 @@ uv run pytest
 uv run --only-group docs mkdocs serve
 ```
 
-To release, raise `__version__` in `src/frame2text4llm/package_metadata.py`, add the version to
-`HISTORY.md`, merge, and run the *Publish to PyPI* workflow.
+To release, follow [RELEASE.md](RELEASE.md).
 
 ## Authors
 

@@ -86,3 +86,11 @@ def test_a_gap_or_a_dropped_segment_ends_a_window():
 def test_windows_too_short_or_too_long_are_left_out():
     assert windows([timed("a", 0, 3)]) == []
     assert windows([timed("a", 0, 40)]) == []
+
+
+def test_a_logo_read_three_ways_is_one_word():
+    reads = ["clideo com", "clideocom", "clideo.com"]
+    texts = [f"Bonjour chef {reads[i % 3]}" for i in range(20)] + [reads[i % 3] for i in range(60)]
+    results = frames(texts)
+    strip_overlays(results)
+    assert {r["text"] for r in results} == {"Bonjour chef", ""}

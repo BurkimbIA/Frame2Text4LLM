@@ -3,7 +3,7 @@
 import numpy as np
 
 from frame2text4llm.framer.base import VideoFrame
-from frame2text4llm.ocr.utils.filters import mark_non_subtitles, seconds, strip_overlays
+from frame2text4llm.ocr.utils.filters import mark_non_subtitles, seconds, strip_overlays, windows
 from frame2text4llm.ocr.utils.text_utils import _merge_segments
 
 
@@ -62,3 +62,27 @@ def test_a_scrolling_text_read_three_times():
     segments = [segment(line[i:] + " " + line[:i], t) for i, t in ((0, 1), (6, 2), (12, 3))]
     segments.append(segment("Bonjour chef !", 10))
     assert [s["drop"] for s in mark_non_subtitles(segments, 600)] == ["ticker", "ticker", "ticker", ""]
+
+
+def timed(text, start, end, drop=""):
+    s = segment(text, start)
+    s["end_time"] = VideoFrame(np.zeros(1), float(end), 0).time_formatted
+    s["drop"] = drop
+    return s
+
+
+def test_windows_join_close_subtitles_up_to_5_s():
+    segments = [timed("a", 0, 2), timed("b", 2.5, 4), timed("c", 4.5, 6), timed("d", 6.5, 8)]
+    assert [(w["text"], w["start_time"], w["end_time"]) for w in windows(segments)] == [
+        ("a b c d", "00:00:000", "00:08:000")
+    ]
+
+
+def test_a_gap_or_a_dropped_segment_ends_a_window():
+    segments = [timed("a", 0, 6), timed("b", 10, 16), timed("x", 16.5, 17, "credits"), timed("c", 17.5, 23)]
+    assert [w["text"] for w in windows(segments)] == ["a", "b", "c"]
+
+
+def test_windows_too_short_or_too_long_are_left_out():
+    assert windows([timed("a", 0, 3)]) == []
+    assert windows([timed("a", 0, 40)]) == []

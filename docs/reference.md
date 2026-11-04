@@ -22,6 +22,8 @@ Generated from the docstrings.
 
 ::: frame2text4llm.ocr.utils.filters.mark_non_subtitles
 
+::: frame2text4llm.ocr.utils.filters.windows
+
 ## Engines
 
 ::: frame2text4llm.ocr.tools.easyocr.EasyOCR

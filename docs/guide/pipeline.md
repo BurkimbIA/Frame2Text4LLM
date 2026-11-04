@@ -51,7 +51,8 @@ with the rules gom-dɛɛsa measured on Burkinabè videos subtitled in French.
 
 `overlay_frames=60` in `process_batch` (or `strip_overlays(results)` on the frames) takes out of
 each frame the words read on 60 frames in a row or more, up to two frames missed: 30 s at 2 frames
-a second. No subtitle stays that long. Left in, a logo next to every subtitle would make
+a second. No subtitle stays that long. Words are compared without case or punctuation, and two
+neighbours also count joined: the OCR reads one logo as `clideo com`, `clideocom` and `clideo.com`. Left in, a logo next to every subtitle would make
 `merge_segments` join them all into one segment.
 
 `mark_non_subtitles(segments, duration, title)` gives each merged segment a `drop`, `""` for a

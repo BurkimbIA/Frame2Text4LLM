@@ -62,3 +62,11 @@ def test_a_scrolling_text_read_three_times():
     segments = [segment(line[i:] + " " + line[:i], t) for i, t in ((0, 1), (6, 2), (12, 3))]
     segments.append(segment("Bonjour chef !", 10))
     assert [s["drop"] for s in mark_non_subtitles(segments, 600)] == ["ticker", "ticker", "ticker", ""]
+
+
+def test_a_logo_read_three_ways_is_one_word():
+    reads = ["clideo com", "clideocom", "clideo.com"]
+    texts = [f"Bonjour chef {reads[i % 3]}" for i in range(20)] + [reads[i % 3] for i in range(60)]
+    results = frames(texts)
+    strip_overlays(results)
+    assert {r["text"] for r in results} == {"Bonjour chef", ""}

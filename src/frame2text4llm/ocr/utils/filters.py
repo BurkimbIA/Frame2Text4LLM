@@ -33,17 +33,33 @@ def _fold(word: str) -> str:
     return plain.strip(string.punctuation)
 
 
+def _key(word: str) -> str:
+    """A word as compared across frames: lower case, letters and digits only, so that `clideo.com` is
+    `clideocom`."""
+    return "".join(c for c in word.lower() if c.isalnum())
+
+
+def _keys(text: str) -> set[str]:
+    """The frame's words as keys, and each two neighbours joined: the OCR reads one logo as `clideo com` on a
+    frame and `clideocom` on the next."""
+    k = [_key(w) for w in text.split()]
+    k = [w for w in k if w]
+    return set(k) | {a + b for a, b in zip(k, k[1:], strict=False)}
+
+
 def strip_overlays(results: list[dict[str, Any]], frames: int = 60, holes: int = 2) -> dict[str, set[str]]:
     """Take out of the frames' text the words read on at least `frames` frames in a row, up to `holes` frames
     missed: 30 s at 2 frames a second. No subtitle stays that long; a logo, a banner or a credit line does.
     Left in, they make `_merge_segments` join every subtitle shown with them into one segment.
 
-    Changes `results` in place, in time order as OCRBatchProcessor returns them, and returns the words taken
-    from each frame, by its `time_formatted`."""
+    Words are compared without case or punctuation, and two neighbours also count joined, so that the readings
+    `clideo com`, `clideocom` and `clideo.com` of one logo are one word. Changes `results` in place, in time
+    order as OCRBatchProcessor returns them, and returns the words taken from each frame, by its
+    `time_formatted`."""
     seen: dict[str, list[int]] = {}
     for i, r in enumerate(results):
         if r.get("success"):
-            for w in set(r.get("text", "").lower().split()):
+            for w in _keys(r.get("text", "")):
                 seen.setdefault(w, []).append(i)
     removed: dict[int, set[str]] = {}
     for w, at in seen.items():
@@ -58,7 +74,16 @@ def strip_overlays(results: list[dict[str, Any]], frames: int = 60, holes: int =
             if i is not None:
                 run = [i]
     for j, words in removed.items():
-        results[j]["text"] = " ".join(t for t in results[j]["text"].split() if t.lower() not in words)
+        tokens, kept, k = results[j]["text"].split(), [], 0
+        while k < len(tokens):
+            if k + 1 < len(tokens) and _key(tokens[k]) + _key(tokens[k + 1]) in words:
+                k += 2
+            elif _key(tokens[k]) in words:
+                k += 1
+            else:
+                kept.append(tokens[k])
+                k += 1
+        results[j]["text"] = " ".join(kept)
     return {results[j]["time_formatted"]: words for j, words in removed.items()}
 
 

@@ -1,13 +1,14 @@
 import re
 import unicodedata
 from difflib import SequenceMatcher
-from typing import List, Dict, Any, Optional
+from typing import Any
+
 from loguru import logger
 
 
 def _similar(a: str, b: str) -> float:
-        """Calculate similarity between two strings."""
-        return SequenceMatcher(None, a, b).ratio()
+    """Calculate similarity between two strings."""
+    return SequenceMatcher(None, a, b).ratio()
 
 
 def _words(text: str) -> set:
@@ -25,8 +26,9 @@ def _same_subtitle(a: str, b: str, sim_thresh: float, min_shared: float) -> bool
     return shared >= min_shared or _similar(a, b) >= sim_thresh
 
 
-def _merge_segments(ocr_results: List[Dict[str, Any]], sim_thresh: float = 0.8,
-                    min_shared: float = 0.5, max_gap: int = 1) -> List[Dict[str, Any]]:
+def _merge_segments(
+    ocr_results: list[dict[str, Any]], sim_thresh: float = 0.8, min_shared: float = 0.5, max_gap: int = 1
+) -> list[dict[str, Any]]:
     """Merge consecutive frames that show the same text into one segment.
 
     The OCR reads one subtitle differently from frame to frame: a line skipped, an accent, a word
@@ -46,40 +48,44 @@ def _merge_segments(ocr_results: List[Dict[str, Any]], sim_thresh: float = 0.8,
 
     merged, current, gap_start, gap = [], None, None, 0
     for result in ocr_results:
-        text = result.get('text', '').strip() if result.get('success', False) else ''
-        time_formatted = result['time_formatted']
+        text = result.get("text", "").strip() if result.get("success", False) else ""
+        time_formatted = result["time_formatted"]
 
-        if current and text and _same_subtitle(current['text'], text, sim_thresh, min_shared):
-            #mm sous-titre, extend le segment
-            current['end_time'] = time_formatted
+        if current and text and _same_subtitle(current["text"], text, sim_thresh, min_shared):
+            # mm sous-titre, extend le segment
+            current["end_time"] = time_formatted
             gap_start, gap = None, 0
             # garder plus long
-            if len(text) > len(current['text']):
-                current['text'], current['best_time'] = text, time_formatted
+            if len(text) > len(current["text"]):
+                current["text"], current["best_time"] = text, time_formatted
             continue
 
         if current and not text and gap < max_gap:
-            #image vide : peut-être une lecture ratée, on attend la suivante
+            # image vide : peut-être une lecture ratée, on attend la suivante
             gap_start, gap = gap_start or time_formatted, gap + 1
             continue
 
-        #texte different ou plus de texte : le segment actuel finit à la première image sans lui
+        # texte different ou plus de texte : le segment actuel finit à la première image sans lui
         if current:
-            current['end_time'] = gap_start or time_formatted
+            current["end_time"] = gap_start or time_formatted
             merged.append(current)
         gap_start, gap = None, 0
-        current = {
-            'time_formatted': time_formatted,
-            'text': text,
-            'start_time': time_formatted,
-            'end_time': time_formatted,
-            'best_time': time_formatted,
-            'success': True
-        } if text else None
+        current = (
+            {
+                "time_formatted": time_formatted,
+                "text": text,
+                "start_time": time_formatted,
+                "end_time": time_formatted,
+                "best_time": time_formatted,
+                "success": True,
+            }
+            if text
+            else None
+        )
 
-    #pas oublier dernier segment
+    # pas oublier dernier segment
     if current:
-        current['end_time'] = gap_start or current['end_time']
+        current["end_time"] = gap_start or current["end_time"]
         merged.append(current)
 
     logger.info(f"Merged into {len(merged)} segments")

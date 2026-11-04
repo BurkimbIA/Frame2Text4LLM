@@ -28,18 +28,22 @@ subtitles = OCRBatchProcessor(manager).process_batch(
 
 # 3. Read each subtitle once with Qwen3-VL-2B, on the frame EasyOCR read best.
 image = {f.time_formatted: f.image for f in frames}
-prompt = ("Recopie exactement le sous-titre incrusté dans cette image, sur une seule ligne, "
-          "sans rien ajouter. S'il n'y a pas de sous-titre, réponds seulement : -")
+prompt = (
+    "Recopie exactement le sous-titre incrusté dans cette image, sur une seule ligne, "
+    "sans rien ajouter. S'il n'y a pas de sous-titre, réponds seulement : -"
+)
 vlm = manager.get_tool_instance("vlm", model_name="Qwen/Qwen3-VL-2B-Instruct")
 vlm.prompt = prompt
 for s in subtitles:
     s["text"] = manager.process(image[s["best_time"]], tool="vlm")
+
 
 # 4. Cut the audio, from half a second before the first frame that shows the subtitle.
 def earlier(t, by=0.5):
     m, sec, ms = map(int, t.split(":"))
     x = max(0, round((m * 60 + sec + ms / 1000 - by) * 1000))
     return f"{x // 60000:02d}:{x // 1000 % 60:02d}:{x % 1000:03d}"
+
 
 cuts = [{"start_time": earlier(s["start_time"]), "end_time": s["end_time"]} for s in subtitles]
 for s, wav in zip(subtitles, AudioGenerator(path, tmp_audio_dir="cuts").extract_segments(cuts)):
@@ -60,6 +64,7 @@ about 6 GB at 480x360. Above an hour, read the frames yourself and keep only the
 import cv2
 from frame2text4llm.framer.base import VideoFrame
 
+
 def bands(path, top=0.7, fps=2):
     cap = cv2.VideoCapture(path)
     rate = cap.get(cv2.CAP_PROP_FPS)
@@ -67,7 +72,7 @@ def bands(path, top=0.7, fps=2):
     while cap.grab():
         if n % step == 0:
             f = cap.retrieve()[1]
-            frames.append(VideoFrame(f[int(f.shape[0] * top):], n / rate, n))
+            frames.append(VideoFrame(f[int(f.shape[0] * top) :], n / rate, n))
         n += 1
     return frames
 ```

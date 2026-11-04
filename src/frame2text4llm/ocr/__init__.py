@@ -1,2 +1,2 @@
+from .batch import OCRBatchProcessor
 from .manager import OCRManager
-from  .batch import OCRBatchProcessor

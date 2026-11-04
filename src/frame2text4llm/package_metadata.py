@@ -1,8 +1,8 @@
-"""Package metadata. """
+"""Package metadata."""
 
 from importlib.metadata import version
 
-__doc__ = "Le projet frame2text4llm est un tools d'OCR  pour videos, afin d'exploiter ce texte pour des taches de NLP /LLM si on veut etre buzzyword :)."
+__doc__ = "Read the subtitles burned into a video with OCR, and cut the audio under each one."
 __name__ = "frame2text4llm"
 __author__ = "Alban NYANTUDRE, Salif SAWADOGO"
 __email__ = "frame2text4llm@gmail.com"

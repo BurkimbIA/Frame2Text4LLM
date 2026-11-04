@@ -1,14 +1,13 @@
 import os
-from typing import Optional
-from loguru import logger
 import re
+
 
 class OpenAIOCR:
     """
     OCR implementation using OpenAI's Vision API.
     """
 
-    def __init__(self, api_key: Optional[str] = None):
+    def __init__(self, api_key: str | None = None):
         """
         Initialize OpenAI OCR engine.
 
@@ -48,20 +47,20 @@ class OpenAIOCR:
                             {"type": "text", "text": prompt},
                             {
                                 "type": "image_url",
-                                "image_url": {"url": f"data:image/jpeg;base64,{base64_img}"}
-                            }
-                        ]
+                                "image_url": {"url": f"data:image/jpeg;base64,{base64_img}"},
+                            },
+                        ],
                     }
                 ],
-                max_tokens=300
+                max_tokens=300,
             )
 
             if response.choices and len(response.choices) > 0:
-                output =  response.choices[0].message.content.strip()
+                output = response.choices[0].message.content.strip()
                 match = re.search(r"<ocr>(.*?)</ocr>", output)
                 if match:
                     return match.group(1)
             return ""
 
         except Exception as e:
-            raise RuntimeError(f"OpenAI OCR failed: {str(e)}")
+            raise RuntimeError(f"OpenAI OCR failed: {str(e)}") from e

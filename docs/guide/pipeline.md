@@ -55,6 +55,8 @@ a second. No subtitle stays that long. Words are compared without case or punctu
 neighbours also count joined: the OCR reads one logo as `clideo com`, `clideocom` and `clideo.com`. Left in, a logo next to every subtitle would make
 `merge_segments` join them all into one segment.
 
+![The clideo.com watermark taken out](../images/overlays.png)
+
 `mark_non_subtitles(segments, duration, title)` gives each merged segment a `drop`, `""` for a
 subtitle:
 
@@ -76,6 +78,8 @@ Each window is a segment: the subtitles' text end to end, the first one's start,
 end, and the subtitles in `subtitles`. `AudioGenerator.extract_segments(windows(segments))` cuts one
 file per window.
 
+![Subtitles and the windows built on them](../images/windows.png)
+
 ## Language
 
 A video subtitled in French may be spoken in French, or mix a French narrator with speakers of
@@ -87,6 +91,13 @@ files and gives, for each, the language heard most and the probability of the la
 
 `written_in(text)` says whether a subtitle is written in French or English by counting function
 words (*le*, *que*, *pas*; *the*, *what*, *not*), and `"other"` when they tie.
+
+![The language MMS-LID hears in each window](../images/language.png)
+
+On this sketch MMS-LID hears Moore in 6 windows of 31, and spreads the others over Lingala, Haitian
+Creole, Yoruba and five more: its answer alone does not tell a window's language here.
+
+The three figures come from `sandbox/sample_short.mp4`, made by `scripts/figures.py`.
 
 ## Audio
 

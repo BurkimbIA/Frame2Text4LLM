@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Security
+
+- certifi 2026.10.23 in `uv.lock`, and uv pinned to 0.13.4 in CI and in the pre-commit hook: earlier versions trust
+  the compromised emSign ECC Root CA - G3 root.
+
 ### Changed
 
 - The project lives at `BurkimbIA/Frame2Text4LLM`; the documentation moved to

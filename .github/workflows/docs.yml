@@ -20,6 +20,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.13.4"  # earlier uv ships the compromised emSign ECC Root CA - G3
       - run: uv run --only-group docs mkdocs build --strict
       - uses: actions/upload-pages-artifact@v3
         with:

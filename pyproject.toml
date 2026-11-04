@@ -60,7 +60,7 @@ packages = ["src/frame2text4llm"]
 include = ["src/frame2text4llm", "tests", "README.md", "CHANGELOG.md", "LICENSE"]
 
 [dependency-groups]
-dev = ["pytest>=7.4.0"]
+dev = ["pre-commit>=4.5.1", "pytest>=7.4.0", "ruff>=0.14.10"]
 docs = ["mkdocs<2", "mkdocs-material", "mkdocstrings[python]"]  # MkDocs 2 drops plugins
 
 [tool.uv]
@@ -69,3 +69,12 @@ exclude-newer = "1 week"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra -q"
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+exclude = [".venv", "build", "dist", "sandbox", "notebooks"]
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "UP", "I"]
+fixable = ["ALL"]

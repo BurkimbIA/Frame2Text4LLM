@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `VLMOCR` runs on Apple's GPU (MPS) when there is no CUDA, and loads Qwen3-VL in bfloat16 there: on a Mac M5 it
   reads as float32 does, 30 times faster. It fell back to the CPU before.
+- `strip_overlays` and `process_batch(overlay_frames=60)` take logos and banners out of the frames before
+  merging; `mark_non_subtitles` marks credits, the video's title and scrolling text in the merged segments. The
+  rules come from gom-dɛɛsa.
 
 ### Security
 

@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   merging; `mark_non_subtitles` marks credits, the video's title and scrolling text in the merged segments. The
   rules come from gom-dɛɛsa.
 - `windows` joins subtitles less than 2 s apart into windows of 5 to 30 s, as segments `AudioGenerator` cuts.
+- `LanguageID` (MMS-LID, the new `lid` extra) says which language each window is spoken in; `written_in` says
+  whether a subtitle is written in French or English.
 
 ### Security
 

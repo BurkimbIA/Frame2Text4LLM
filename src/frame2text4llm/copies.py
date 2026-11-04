@@ -3,8 +3,9 @@ re-encoded: its duration does not tell, its subtitles do. From gom-dɛɛsa (Burk
 S161 and S171), where one subtitle line read from a short clip finds its copy among thousands of videos.
 
 A line read by OCR is noisy ("Blane" for "Blanc"), so neither a ratio of whole strings nor shared word
-trigrams find its copy. Character 5-grams pick the ten videos closest to it, then the best alignment of the line
-inside each video's whole text decides: 85 or more out of 100 was a copy there; between 70 and 85, look."""
+trigrams find its copy. Character 5-grams pick the ten videos closest to it, then the best alignment of the
+line inside each video's whole text decides: 85 or more out of 100 was a copy there; between 70 and 85,
+look."""
 
 import unicodedata
 from collections import Counter, defaultdict

@@ -1,8 +1,8 @@
 # Frame2Text4LLM
 
 [![PyPI](https://img.shields.io/pypi/v/frame2text4llm)](https://pypi.org/project/frame2text4llm/)
-[![Tests](https://github.com/sawallesalfo/Frame2Text4LLM/actions/workflows/tests.yml/badge.svg)](https://github.com/sawallesalfo/Frame2Text4LLM/actions/workflows/tests.yml)
-[![Docs](https://img.shields.io/badge/docs-github%20pages-orange)](https://sawallesalfo.github.io/Frame2Text4LLM/)
+[![Tests](https://github.com/BurkimbIA/Frame2Text4LLM/actions/workflows/tests.yml/badge.svg)](https://github.com/BurkimbIA/Frame2Text4LLM/actions/workflows/tests.yml)
+[![Docs](https://img.shields.io/badge/docs-github%20pages-orange)](https://burkimbia.github.io/Frame2Text4LLM/)
 
 **By Alban Nyantudre and Salif Sawadogo**, for [BurkimbIA](https://huggingface.co/burkimbia).
 
@@ -10,7 +10,7 @@ Read the subtitles burned into a video with OCR, find when each one starts and e
 audio underneath. What comes out is pairs of speech and text, for speech recognition or speech
 translation datasets in languages that have few of them.
 
-![Frame2Text4LLM](https://raw.githubusercontent.com/sawallesalfo/Frame2Text4LLM/main/assets/diagram_frame2text.png)
+![Frame2Text4LLM](https://raw.githubusercontent.com/BurkimbIA/Frame2Text4LLM/main/assets/diagram_frame2text.png)
 
 ## Install
 
@@ -49,11 +49,11 @@ Measured on 48 subtitle frames from four Burkinabè series with French subtitles
 | EasyOCR | 37.5 % | 0.05 |
 
 We find subtitles with EasyOCR and read each one once with Qwen3-VL-2B.
-[Choosing an OCR engine](https://sawallesalfo.github.io/Frame2Text4LLM/guide/engines/) has the details.
+[Choosing an OCR engine](https://burkimbia.github.io/Frame2Text4LLM/guide/engines/) has the details.
 
 ## Documentation
 
-<https://sawallesalfo.github.io/Frame2Text4LLM/>
+<https://burkimbia.github.io/Frame2Text4LLM/>
 
 ## Develop
 

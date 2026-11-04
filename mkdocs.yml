@@ -1,8 +1,8 @@
 site_name: Frame2Text4LLM
 site_description: Read the subtitles burned into a video, and cut the audio under each one.
-site_url: https://sawallesalfo.github.io/Frame2Text4LLM/
-repo_url: https://github.com/sawallesalfo/Frame2Text4LLM
-repo_name: sawallesalfo/Frame2Text4LLM
+site_url: https://burkimbia.github.io/Frame2Text4LLM/
+repo_url: https://github.com/BurkimbIA/Frame2Text4LLM
+repo_name: BurkimbIA/Frame2Text4LLM
 edit_uri: edit/main/docs/
 
 theme:

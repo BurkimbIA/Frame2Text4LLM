@@ -45,9 +45,9 @@ openai = ["openai"]
 all = ["frame2text4llm[easyocr,paddle,vlm,openai]"]
 
 [project.urls]
-Homepage = "https://github.com/sawallesalfo/Frame2Text4LLM"
-Issues = "https://github.com/sawallesalfo/Frame2Text4LLM/issues"
-Changelog = "https://github.com/sawallesalfo/Frame2Text4LLM/blob/main/HISTORY.md"
+Homepage = "https://github.com/BurkimbIA/Frame2Text4LLM"
+Issues = "https://github.com/BurkimbIA/Frame2Text4LLM/issues"
+Changelog = "https://github.com/BurkimbIA/Frame2Text4LLM/blob/main/HISTORY.md"
 
 [build-system]
 requires = ["hatchling"]

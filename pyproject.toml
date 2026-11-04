@@ -43,7 +43,8 @@ paddle = ["paddleocr>=3.1,<4", "paddlepaddle>=3"]  # the 3.x API: PaddleOCR.pred
 vlm = ["torch", "torchvision", "transformers>=4.57", "accelerate", "pillow", "einops", "timm"]
 openai = ["openai"]
 lid = ["torch", "transformers>=4.57"]
-all = ["frame2text4llm[easyocr,paddle,vlm,openai,lid]"]
+copies = ["rapidfuzz"]
+all = ["frame2text4llm[easyocr,paddle,vlm,openai,lid,copies]"]
 
 [project.urls]
 Homepage = "https://github.com/BurkimbIA/Frame2Text4LLM"
@@ -61,7 +62,7 @@ packages = ["src/frame2text4llm"]
 include = ["src/frame2text4llm", "tests", "README.md", "CHANGELOG.md", "LICENSE"]
 
 [dependency-groups]
-dev = ["pre-commit>=4.5.1", "pytest>=7.4.0", "ruff>=0.14.10"]
+dev = ["pre-commit>=4.5.1", "pytest>=7.4.0", "rapidfuzz", "ruff>=0.14.10"]  # rapidfuzz: test_copies
 docs = ["mkdocs<2", "mkdocs-material", "mkdocstrings[python]"]  # MkDocs 2 drops plugins
 
 [tool.uv]

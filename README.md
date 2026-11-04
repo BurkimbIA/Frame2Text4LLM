@@ -10,7 +10,7 @@ Read the subtitles burned into a video with OCR, find when each one starts and e
 audio underneath. What comes out is pairs of speech and text, for speech recognition or speech
 translation datasets in languages that have few of them.
 
-![Frame2Text4LLM](https://raw.githubusercontent.com/BurkimbIA/Frame2Text4LLM/main/assets/diagram_frame2text.png)
+![The pipeline](https://raw.githubusercontent.com/BurkimbIA/Frame2Text4LLM/main/docs/diagrams/pipeline.png)
 
 ## Install
 
@@ -19,24 +19,34 @@ pip install "frame2text4llm[easyocr]"
 ```
 
 OCR engines are extras: `easyocr`, `paddle`, `vlm` (Qwen3-VL, Florence-2, InternVL2), `openai`; `lid`
-adds the spoken-language check, `copies` the copy check, and `all` installs them all. Audio cuts need [ffmpeg](https://ffmpeg.org/).
+adds the spoken-language check, `copies` the copy check, and `all` installs them all. Audio cuts need
+[ffmpeg](https://ffmpeg.org/).
 
 ## Use
 
 ```python
-from frame2text4llm.framer import VideoReader
-from frame2text4llm.ocr import OCRBatchProcessor, OCRManager
 from frame2text4llm.export.audio_generator import AudioGenerator
+from frame2text4llm.framer import VideoReader
+from frame2text4llm.language import LanguageID
+from frame2text4llm.ocr import OCRBatchProcessor, OCRManager
+from frame2text4llm.ocr.utils import mark_non_subtitles, windows
 
 reader = VideoReader("episode.mp4")
 frames = reader.extract_frames(target_fps=2)
 h, w = frames[0].image.shape[:2]
 manager = OCRManager(reader, region=(int(h * 0.7), h, 0, w))
-subtitles = OCRBatchProcessor(manager).process_batch(
-    frames, tool="easyocr", lang="fr", n_cores=1, merge_segments=True
+segments = OCRBatchProcessor(manager).process_batch(
+    frames, tool="easyocr", lang="fr", n_cores=1, merge_segments=True, overlay_frames=60
 )
-audio = AudioGenerator("episode.mp4", tmp_audio_dir="cuts").extract_segments(subtitles)
+mark_non_subtitles(segments, duration=len(frames) / 2)
+cuts = windows(segments)
+paths = AudioGenerator("episode.mp4", tmp_audio_dir="cuts").extract_segments(cuts)
+heard = LanguageID().hear(paths)  # the lid extra
 ```
+
+`overlay_frames=60` takes logos and banners out of the frames, `mark_non_subtitles` marks credits and
+scrolling text, and `windows` joins the subtitles into windows of 5 to 30 s, each cut as one audio file.
+[How it works](https://burkimbia.github.io/Frame2Text4LLM/guide/pipeline/) shows each step on a sample video.
 
 ## Which engine
 

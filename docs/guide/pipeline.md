@@ -8,9 +8,19 @@ Each step is one class, and each can be used alone.
 | frames | `framer.VideoReader` | frames at a chosen rate, each with its time |
 | band | `framer.SubtitleRegionDetector` | where the subtitles are, if you do not say |
 | OCR | `ocr.OCRManager`, `ocr.OCRBatchProcessor` | one engine on one frame, or on all of them |
+| overlays | `process_batch(overlay_frames=60)`, `strip_overlays` | logos and banners out of the frames |
 | subtitles | `process_batch(merge_segments=True)` | frames that show one subtitle become one segment |
-| audio | `export.audio_generator.AudioGenerator` | one WAV per segment, with ffmpeg |
+| not subtitles | `ocr.utils.mark_non_subtitles` | credits, the title, scrolling text marked |
+| windows | `ocr.utils.windows` | subtitles joined into windows of 5 to 30 s |
+| audio | `export.audio_generator.AudioGenerator` | one WAV per segment or window, with ffmpeg |
 | export | `export.SRTExporter`, `export.JSONExporter`, `export.HuggingfaceCooker` | files, or a Hugging Face dataset |
+| language | `language.LanguageID`, `language.written_in` | language spoken in a window, and written |
+| copies | `copies.TextIndex` | the video a subtitle line was already read in |
+
+![The pipeline](../diagrams/pipeline.png)
+
+The diagram's source is `docs/diagrams/pipeline.drawio`: open it in draw.io, change it, and export the PNG and
+SVG next to it.
 
 ## Frames
 

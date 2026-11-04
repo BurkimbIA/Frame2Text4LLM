@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   whether a subtitle is written in French or English.
 - `TextIndex` (the new `copies` extra) finds which video already read a subtitle line comes from, to tell a
   copy published by another channel.
+- A pipeline diagram drawn in draw.io (`docs/diagrams/pipeline.drawio`) in the README and the guide, and a
+  README example that runs the whole pipeline.
 - `scripts/figures.py` makes the guide's figures from `sandbox/sample_short.mp4` with the library itself.
 
 ### Security

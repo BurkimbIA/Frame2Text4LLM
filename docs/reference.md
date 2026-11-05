@@ -24,6 +24,12 @@ Generated from the docstrings.
 
 ::: frame2text4llm.ocr.utils.filters.windows
 
+## Language
+
+::: frame2text4llm.language.LanguageID
+
+::: frame2text4llm.language.written_in
+
 ## Engines
 
 ::: frame2text4llm.ocr.tools.easyocr.EasyOCR

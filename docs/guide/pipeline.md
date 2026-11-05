@@ -76,6 +76,18 @@ Each window is a segment: the subtitles' text end to end, the first one's start,
 end, and the subtitles in `subtitles`. `AudioGenerator.extract_segments(windows(segments))` cuts one
 file per window.
 
+## Language
+
+A video subtitled in French may be spoken in French, or mix a French narrator with speakers of
+another language: only the windows spoken in that language pair with their subtitles.
+
+`LanguageID().hear(paths)` runs MMS-LID (`facebook/mms-lid-256`, 256 languages) on 16 kHz mono
+files and gives, for each, the language heard most and the probability of the languages in
+`languages` (Moore, Dioula, Bambara and French by default). It needs the `lid` extra.
+
+`written_in(text)` says whether a subtitle is written in French or English by counting function
+words (*le*, *que*, *pas*; *the*, *what*, *not*), and `"other"` when they tie.
+
 ## Audio
 
 `AudioGenerator(video, tmp_audio_dir).extract_segments(segments)` runs ffmpeg once per segment and

@@ -1514,6 +1514,10 @@ all = [
 easyocr = [
     { name = "easyocr" },
 ]
+lid = [
+    { name = "torch" },
+    { name = "transformers" },
+]
 openai = [
     { name = "openai" },
 ]
@@ -1551,7 +1555,7 @@ requires-dist = [
     { name = "datasets" },
     { name = "easyocr", marker = "extra == 'easyocr'" },
     { name = "einops", marker = "extra == 'vlm'" },
-    { name = "frame2text4llm", extras = ["easyocr", "paddle", "vlm", "openai"], marker = "extra == 'all'" },
+    { name = "frame2text4llm", extras = ["easyocr", "paddle", "vlm", "openai", "lid"], marker = "extra == 'all'" },
     { name = "huggingface-hub" },
     { name = "loguru", specifier = ">=0.5.0" },
     { name = "matplotlib" },
@@ -1568,12 +1572,14 @@ requires-dist = [
     { name = "scipy" },
     { name = "soundfile" },
     { name = "timm", marker = "extra == 'vlm'" },
+    { name = "torch", marker = "extra == 'lid'" },
     { name = "torch", marker = "extra == 'vlm'" },
     { name = "torchvision", marker = "extra == 'vlm'" },
     { name = "tqdm" },
+    { name = "transformers", marker = "extra == 'lid'", specifier = ">=4.57" },
     { name = "transformers", marker = "extra == 'vlm'", specifier = ">=4.57" },
 ]
-provides-extras = ["easyocr", "paddle", "vlm", "openai", "all"]
+provides-extras = ["easyocr", "paddle", "vlm", "openai", "lid", "all"]
 
 [package.metadata.requires-dev]
 dev = [

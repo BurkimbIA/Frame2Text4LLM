@@ -18,8 +18,8 @@ translation datasets in languages that have few of them.
 pip install "frame2text4llm[easyocr]"
 ```
 
-OCR engines are extras: `easyocr`, `paddle`, `vlm` (Qwen3-VL, Florence-2, InternVL2), `openai`, or
-`all`. Audio cuts need [ffmpeg](https://ffmpeg.org/).
+OCR engines are extras: `easyocr`, `paddle`, `vlm` (Qwen3-VL, Florence-2, InternVL2), `openai`; `lid`
+adds the spoken-language check, and `all` installs them all. Audio cuts need [ffmpeg](https://ffmpeg.org/).
 
 ## Use
 

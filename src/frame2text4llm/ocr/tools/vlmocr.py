@@ -4,13 +4,16 @@ import cv2
 import numpy as np
 from loguru import logger
 
-try:  # the vlm extra, so that importing the other OCR tools does not need torch
+try:  # alone, for pick_device: the lid extra has torch without torchvision
     import torch
+except ImportError:
+    torch = None
+try:  # the vlm extra, so that importing the other OCR tools does not need torch
     import torchvision.transforms as T
     from PIL import Image
     from torchvision.transforms.functional import InterpolationMode
 except ImportError:
-    torch = None
+    T = None
 
 
 PROMPT = (
@@ -52,7 +55,7 @@ class VLMOCR:
                 'Qwen/Qwen3-VL-2B-Instruct', which reads subtitles best (docs: Choosing an OCR engine).
             prompt: What an image-text-to-text model is asked; it answers "-" for no subtitle.
         """
-        if torch is None:
+        if T is None:
             raise ImportError("VLMOCR needs the vlm extra: pip install 'frame2text4llm[vlm]'")
         self.model_name = model_name
         self.prompt = prompt

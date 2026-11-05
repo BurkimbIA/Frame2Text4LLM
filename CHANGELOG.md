@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- `VLMOCR` runs on Apple's GPU (MPS) when there is no CUDA, and loads Qwen3-VL in bfloat16 there: on a Mac M5 it
+  reads as float32 does, 30 times faster. It fell back to the CPU before.
+
 ### Security
 
 - certifi 2026.10.23 in `uv.lock`, and uv pinned to 0.13.4 in CI and in the pre-commit hook: earlier versions trust

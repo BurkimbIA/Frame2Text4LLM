@@ -99,6 +99,17 @@ Creole, Yoruba and five more: its answer alone does not tell a window's language
 
 The three figures come from `sandbox/sample_short.mp4`, made by `scripts/figures.py`.
 
+## Copies
+
+The same film is often published by several channels, cut or re-encoded: its duration does not tell
+a copy, its subtitles do. `TextIndex` keeps the subtitles of the videos read so far (`add(key,
+texts)`), and `closest(line)` gives the video one new line comes from, with a score out of 100. It
+needs the `copies` extra.
+
+A line read by OCR is noisy (*Blane* for *Blanc*), so character 5-grams pick the ten videos closest
+to it, then the best alignment of the line inside each video's whole text decides. In gom-dɛɛsa,
+85 or more was a copy, and between 70 and 85 the video was worth a look.
+
 ## Audio
 
 `AudioGenerator(video, tmp_audio_dir).extract_segments(segments)` runs ffmpeg once per segment and

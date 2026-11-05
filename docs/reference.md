@@ -30,6 +30,10 @@ Generated from the docstrings.
 
 ::: frame2text4llm.language.written_in
 
+## Copies
+
+::: frame2text4llm.copies.TextIndex
+
 ## Engines
 
 ::: frame2text4llm.ocr.tools.easyocr.EasyOCR

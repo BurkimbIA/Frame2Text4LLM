@@ -19,7 +19,7 @@ pip install "frame2text4llm[easyocr]"
 ```
 
 OCR engines are extras: `easyocr`, `paddle`, `vlm` (Qwen3-VL, Florence-2, InternVL2), `openai`; `lid`
-adds the spoken-language check, and `all` installs them all. Audio cuts need [ffmpeg](https://ffmpeg.org/).
+adds the spoken-language check, `copies` the copy check, and `all` installs them all. Audio cuts need [ffmpeg](https://ffmpeg.org/).
 
 ## Use
 

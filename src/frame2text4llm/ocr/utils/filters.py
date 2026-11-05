@@ -106,12 +106,12 @@ def mark_non_subtitles(
     """Give each merged segment a `drop`: "" for a subtitle, else what it is.
 
     - "credits": a credits keyword, two words in capitals, a first name and a NAME, or the video's `title`.
-      A credit after 85 % of the video's `duration` (seconds) drops everything after it too.
+      Two credits in a row after 85 % of the video's `duration` (seconds) drop everything after them too.
     - "ticker": three segments or more in a row, each the one before moved, as a scrolling text is read.
 
     Changes `segments` in place and returns them. Segments are `_merge_segments`'s, in time order."""
     folded_title = re.sub(r"[^a-z0-9]+", "_", _fold(title)).strip("_")
-    tail = False
+    tail, late = False, 0
     for s in segments:
         text = s.get("text", "")
         s["drop"] = "" if text.strip() else "empty"
@@ -127,8 +127,13 @@ def mark_non_subtitles(
             or (len(line) >= 4 and folded_title and line in folded_title)
         ):
             s["drop"] = "credits"
-            tail = tail or seconds(s["start_time"]) > 0.85 * duration
+            late = late + 1 if seconds(s["start_time"]) > 0.85 * duration else 0
+            tail = tail or late >= 2
+        else:
+            late = 0
     kept = [s for s in segments if not s["drop"]]
+    if not kept:
+        return segments
     run = kept[:1]
     for a, b in zip(kept, [*kept[1:], None], strict=True):
         if b is not None and _shifted(a["text"], b["text"]):

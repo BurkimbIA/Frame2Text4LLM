@@ -44,10 +44,21 @@ def test_credits_and_what_follows_them_at_the_end():
         segment("Réalisation : Boubacar", 20),
         segment("Et la famille ?", 30),
         segment("Avec Awa OUEDRAOGO", 95),
+        segment("Montage : Ali", 96),
         segment("Merci à tous", 98),
     ]
     drops = [s["drop"] for s in mark_non_subtitles(segments, duration=100)]
-    assert drops == ["", "credits", "", "credits", "credits"]
+    assert drops == ["", "credits", "", "credits", "credits", "credits"]
+
+
+def test_one_credit_word_late_in_the_dialogue_drops_only_its_line():
+    segments = [segment("La production de coton a baissé", 88), segment("Il faut aider les paysans", 92)]
+    assert [s["drop"] for s in mark_non_subtitles(segments, duration=100)] == ["credits", ""]
+
+
+def test_nothing_left_after_the_credits_does_not_crash():
+    assert mark_non_subtitles([], 100) == []
+    assert [s["drop"] for s in mark_non_subtitles([segment("Réalisation : X", 1)], 100)] == ["credits"]
 
 
 def test_the_title_is_not_a_subtitle():

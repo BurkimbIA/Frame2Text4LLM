@@ -144,3 +144,54 @@ def mark_non_subtitles(
                 s["drop"] = "ticker"
         run = [b]
     return segments
+
+
+def windows(
+    segments: list[dict[str, Any]], gap: int | float = 2.0, low: int | float = 5.0, high: int | float = 30.0
+) -> list[dict[str, Any]]:
+    """The subtitles in windows to cut audio on: a subtitle alone is often too short for speech recognition.
+
+    Consecutive subtitles less than `gap` s apart form a run, and each run is packed into windows of at least
+    `low` s; a short tail joins the window before it. A segment with a `drop` (`mark_non_subtitles`) ends a
+    run, since its sound has no text. A window shorter than `low` or longer than `high` s is left out.
+
+    Each window is a segment, so that `AudioGenerator.extract_segments` cuts it: its subtitles' `text` end to
+    end, the first one's `start_time`, the last one's `end_time`, and the subtitles themselves in
+    `subtitles`."""
+    runs: list[list[dict[str, Any]]] = []
+    run: list[dict[str, Any]] = []
+    prev = None
+    for s in segments:
+        dropped = bool(s.get("drop"))
+        if dropped or (prev and seconds(s["start_time"]) - seconds(prev["end_time"]) > gap):
+            runs.append(run)
+            run = []
+        if not dropped:
+            run.append(s)
+        prev = None if dropped else s
+    runs.append(run)
+    found = []
+    for run in runs:
+        packed: list[list[dict[str, Any]]] = []
+        cur: list[dict[str, Any]] = []
+        for s in run:
+            cur.append(s)
+            if seconds(cur[-1]["end_time"]) - seconds(cur[0]["start_time"]) >= low:
+                packed.append(cur)
+                cur = []
+        if cur and packed:
+            packed[-1] += cur
+        elif cur:
+            packed.append(cur)
+        found += packed
+    return [
+        {
+            "text": " ".join(x["text"] for x in w),
+            "start_time": w[0]["start_time"],
+            "end_time": w[-1]["end_time"],
+            "subtitles": w,
+            "success": True,
+        }
+        for w in found
+        if low <= seconds(w[-1]["end_time"]) - seconds(w[0]["start_time"]) <= high
+    ]

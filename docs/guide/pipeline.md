@@ -65,6 +65,17 @@ subtitle:
 
 A video subtitled all in capitals loses every line to the capitals rule.
 
+## Windows
+
+A subtitle alone lasts two or three seconds, often too short to train speech recognition on.
+`windows(segments)` joins consecutive subtitles less than 2 s apart (`gap`) into windows of at least
+5 s (`low`); a short tail joins the window before it. A segment marked by `mark_non_subtitles` ends
+a window, since its sound has no text. Windows under 5 s or over 30 s (`high`) are left out.
+
+Each window is a segment: the subtitles' text end to end, the first one's start, the last one's
+end, and the subtitles in `subtitles`. `AudioGenerator.extract_segments(windows(segments))` cuts one
+file per window.
+
 ## Audio
 
 `AudioGenerator(video, tmp_audio_dir).extract_segments(segments)` runs ffmpeg once per segment and

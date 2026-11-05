@@ -8,15 +8,7 @@ finds when each one starts and ends, and cuts the audio underneath. What comes o
 pairs, the speech and the text that goes with it, ready for a speech recognition or speech
 translation dataset.
 
-```mermaid
-flowchart LR
-    A[video] --> B[frames, 2 per second]
-    B --> C[subtitle band]
-    C --> D[OCR]
-    D --> E[subtitles, start and end]
-    E --> F[audio cut per subtitle]
-    E --> G[SRT, JSON, Hugging Face dataset]
-```
+![The pipeline](diagrams/pipeline.png)
 
 ## Install
 

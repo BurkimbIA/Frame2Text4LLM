@@ -1,8 +1,7 @@
-
-from .paddleocr import PaddleOCR
-from .openaiocr import OpenAIOCR
-from .mistralocr import MistralOCR
 from .easyocr import EasyOCR
+from .mistralocr import MistralOCR
+from .openaiocr import OpenAIOCR
+from .paddleocr import PaddleOCR
 from .vlmocr import VLMOCR
 
 OCR_TOOLS = {

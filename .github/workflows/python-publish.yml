@@ -1,6 +1,6 @@
 name: Publish to PyPI
 on:
-  workflow_dispatch:  # run by hand, once the version and HISTORY.md are updated
+  workflow_dispatch:  # run by hand, once the release PR is merged (RELEASE.md)
 permissions:
   contents: read
 jobs:
@@ -14,6 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.13.4"  # earlier uv ships the compromised emSign ECC Root CA - G3
       - run: uv build
       - run: uvx twine check dist/*
       - uses: pypa/gh-action-pypi-publish@release/v1

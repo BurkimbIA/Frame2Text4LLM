@@ -1,4 +1,5 @@
 """OCRManager keeps one engine per model. Run with pytest, or python tests/test_manager.py."""
+
 import frame2text4llm.ocr.manager as manager_module
 from frame2text4llm.framer.video import VideoReader
 from frame2text4llm.ocr.manager import OCRManager

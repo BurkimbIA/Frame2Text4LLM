@@ -1,6 +1,6 @@
 [project]
 name = "frame2text4llm"
-dynamic = ["version"]
+version = "0.1.0"
 description = "Read the subtitles burned into a video with OCR, and cut the audio under each one, to build speech and text datasets."
 readme = "README.md"
 license = "MIT"
@@ -45,25 +45,22 @@ openai = ["openai"]
 all = ["frame2text4llm[easyocr,paddle,vlm,openai]"]
 
 [project.urls]
-Homepage = "https://github.com/sawallesalfo/Frame2Text4LLM"
-Issues = "https://github.com/sawallesalfo/Frame2Text4LLM/issues"
-Changelog = "https://github.com/sawallesalfo/Frame2Text4LLM/blob/main/HISTORY.md"
+Homepage = "https://github.com/BurkimbIA/Frame2Text4LLM"
+Issues = "https://github.com/BurkimbIA/Frame2Text4LLM/issues"
+Changelog = "https://github.com/BurkimbIA/Frame2Text4LLM/blob/main/CHANGELOG.md"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[tool.hatch.version]
-path = "src/frame2text4llm/package_metadata.py"
-
 [tool.hatch.build.targets.wheel]
 packages = ["src/frame2text4llm"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src/frame2text4llm", "tests", "README.md", "HISTORY.md", "LICENSE"]
+include = ["src/frame2text4llm", "tests", "README.md", "CHANGELOG.md", "LICENSE"]
 
 [dependency-groups]
-dev = ["pytest>=7.4.0"]
+dev = ["pre-commit>=4.5.1", "pytest>=7.4.0", "ruff>=0.14.10"]
 docs = ["mkdocs<2", "mkdocs-material", "mkdocstrings[python]"]  # MkDocs 2 drops plugins
 
 [tool.uv]
@@ -72,3 +69,18 @@ exclude-newer = "1 week"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra -q"
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+exclude = [".venv", "build", "dist", "sandbox", "notebooks"]
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "UP", "I"]
+fixable = ["ALL"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]  # the package re-exports its classes
+# their prompts are triple-quoted text the model reads as is: cutting a line would change it
+"src/frame2text4llm/ocr/tools/openaiocr.py" = ["E501"]
+"src/frame2text4llm/ocr/tools/vlmocr.py" = ["E501"]

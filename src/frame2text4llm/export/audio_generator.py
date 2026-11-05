@@ -1,39 +1,50 @@
-import os
 import subprocess
-from typing import List, Dict, Any
 from pathlib import Path
-import numpy as np
-import soundfile as sf
+from typing import Any
+
 from loguru import logger
+
 
 class AudioGenerator:
     """
     Extracts audio from a video and segments it according to timestamps.
     Segments are saved as .wav files in a temporary directory.
     """
+
     def __init__(self, video_path: str, tmp_audio_dir: str = "tmp_audio"):
         self.video_path = video_path
         self.tmp_audio_dir = Path(tmp_audio_dir)
         self.tmp_audio_dir.mkdir(parents=True, exist_ok=True)
 
-    def extract_segments(self, segments: List[Dict[str, Any]],
-                        sample_rate: int = 16000) -> List[str]:
+    def extract_segments(self, segments: list[dict[str, Any]], sample_rate: int = 16000) -> list[str]:
         """
         For each segment (with start_time, end_time), extract audio and save as wav.
         Returns list of audio file paths.
         """
         audio_paths = []
         for idx, seg in enumerate(segments):
-            start = self._parse_time(seg['start_time'])
-            end = self._parse_time(seg.get('end_time'))
+            start = self._parse_time(seg["start_time"])
+            end = self._parse_time(seg.get("end_time"))
             duration = max(0.1, end - start) if end > start else 3.0
             out_path = self.tmp_audio_dir / f"segment_{idx:04d}.wav"
             # -ss before -i seeks in the file instead of decoding everything before the segment
             cmd = [
-                "ffmpeg", "-y", "-ss", f"{start:.3f}", "-i", str(self.video_path),
-                "-t", f"{duration:.3f}",
-                "-ar", str(sample_rate), "-ac", "1", "-vn", str(out_path),
-                "-loglevel", "error"
+                "ffmpeg",
+                "-y",
+                "-ss",
+                f"{start:.3f}",
+                "-i",
+                str(self.video_path),
+                "-t",
+                f"{duration:.3f}",
+                "-ar",
+                str(sample_rate),
+                "-ac",
+                "1",
+                "-vn",
+                str(out_path),
+                "-loglevel",
+                "error",
             ]
             result = subprocess.run(cmd)
             if result.returncode == 0 and out_path.exists():

@@ -2,9 +2,10 @@
 OCR Manager implementation for Frame2Tex4LLM.
 """
 
-import os
+from typing import Any
+
 import numpy as np
-from typing import Dict, Any, Optional, List, Tuple
+
 from frame2text4llm.framer.subtitle import SubtitleRegionDetector
 from frame2text4llm.framer.video import VideoReader
 
@@ -18,7 +19,7 @@ class OCRManager:
     Supports multiple OCR engines: Tesseract, PaddleOCR, OpenAI, and Mistral.
     """
 
-    def __init__(self, video_reader: VideoReader, region: Optional[Tuple[int, int, int, int]] = None):
+    def __init__(self, video_reader: VideoReader, region: tuple[int, int, int, int] | None = None):
         """Initialize OCR Manager with available tools.
 
         region: (y1, y2, x1, x2) of the subtitles. Left out, it is detected on the first frame
@@ -27,9 +28,11 @@ class OCRManager:
         self.video_reader = video_reader
         self.region = region
         self.available_tools = list(OCR_TOOLS.keys())
-        self.tool_instances: Dict[str, Any] = {}
+        self.tool_instances: dict[str, Any] = {}
 
-    def get_tool_instance(self, tool_name: str, api_key: Optional[str] = None, model_name: Optional[str] = None) -> Any:
+    def get_tool_instance(
+        self, tool_name: str, api_key: str | None = None, model_name: str | None = None
+    ) -> Any:
         """
         Get or create an instance of the requested OCR tool.
 
@@ -55,7 +58,11 @@ class OCRManager:
         # A new instance if there is none, if an API key is given, or for another model: loading a
         # model for every image would be slow
         cached = self.tool_instances.get(tool_name)
-        if cached is None or api_key or (full_model_name and getattr(cached, "model_name", None) != full_model_name):
+        if (
+            cached is None
+            or api_key
+            or (full_model_name and getattr(cached, "model_name", None) != full_model_name)
+        ):
             tool_class = OCR_TOOLS[tool_name]
 
             if tool_name in ["openai", "mistral"]:
@@ -63,7 +70,9 @@ class OCRManager:
                     raise ValueError(f"API key is required for {tool_name} OCR")
                 self.tool_instances[tool_name] = tool_class(api_key=api_key)
             elif tool_name == "vlm":
-                self.tool_instances[tool_name] = tool_class(model_name=full_model_name or "Qwen/Qwen3-VL-2B-Instruct")
+                self.tool_instances[tool_name] = tool_class(
+                    model_name=full_model_name or "Qwen/Qwen3-VL-2B-Instruct"
+                )
             else:
                 self.tool_instances[tool_name] = tool_class()
 
@@ -74,9 +83,9 @@ class OCRManager:
         image: np.ndarray,
         tool: str = "tesseract",
         lang: str = "eng",
-        api_key: Optional[str] = None,
+        api_key: str | None = None,
         detect_subtitle_reggion: bool = True,
-        model_name: Optional[str] = None,
+        model_name: str | None = None,
     ) -> str:
         """
         Process an image using the selected OCR tool.
@@ -107,11 +116,11 @@ class OCRManager:
 
     def batch_process(
         self,
-        images: List[np.ndarray],
+        images: list[np.ndarray],
         tool: str = "tesseract",
         lang: str = "",
-        api_key: Optional[str] = None,
-    ) -> List[str]:
+        api_key: str | None = None,
+    ) -> list[str]:
         """
         Process multiple images using the selected OCR tool.
 

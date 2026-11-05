@@ -18,6 +18,10 @@ Generated from the docstrings.
 
 ::: frame2text4llm.ocr.utils.text_utils._merge_segments
 
+::: frame2text4llm.ocr.utils.filters.strip_overlays
+
+::: frame2text4llm.ocr.utils.filters.mark_non_subtitles
+
 ## Engines
 
 ::: frame2text4llm.ocr.tools.easyocr.EasyOCR

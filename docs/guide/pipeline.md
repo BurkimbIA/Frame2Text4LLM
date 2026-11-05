@@ -44,6 +44,27 @@ On one episode, this turned 224 one-second pieces into 126 subtitles of four sec
 subtitles in a row that share half their words ("Oui papa", then "Non papa") become one: the
 price of the rule.
 
+## Text that is not a subtitle
+
+A logo, a channel's banner, credits and scrolling text are read too. Two functions take them out,
+with the rules gom-dɛɛsa measured on Burkinabè videos subtitled in French.
+
+`overlay_frames=60` in `process_batch` (or `strip_overlays(results)` on the frames) takes out of
+each frame the words read on 60 frames in a row or more, up to two frames missed: 30 s at 2 frames
+a second. No subtitle stays that long. Words are compared without case or punctuation, and two
+neighbours also count joined: the OCR reads one logo as `clideo com`, `clideocom` and `clideo.com`. Left in, a logo next to every subtitle would make
+`merge_segments` join them all into one segment.
+
+`mark_non_subtitles(segments, duration, title)` gives each merged segment a `drop`, `""` for a
+subtitle:
+
+- `"credits"`: a credits word (*réalisation*, *montage*, *production*, ©...), two words in
+  capitals, a first name and a NAME as a cast list prints them, or the video's title. A credit after
+  85 % of the video drops everything after it.
+- `"ticker"`: three segments or more in a row, each the one before moved.
+
+A video subtitled all in capitals loses every line to the capitals rule.
+
 ## Audio
 
 `AudioGenerator(video, tmp_audio_dir).extract_segments(segments)` runs ffmpeg once per segment and

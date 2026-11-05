@@ -19,6 +19,24 @@ PROMPT = (
 )
 
 
+def pick_device() -> str:
+    """CUDA, then Apple's GPU (MPS), then the CPU."""
+    if torch.cuda.is_available():
+        return "cuda:0"
+    if torch.backends.mps.is_available():
+        return "mps"
+    return "cpu"
+
+
+def reads_bfloat16(device: str) -> bool:
+    """Whether Qwen3-VL should load in bfloat16 on this device. On a GPU of compute capability 8 and up, and on
+    Apple's GPU, where bfloat16 reads as float32 does and 30 times faster (Mac M5, gom-dɛɛsa S89); float32 on a T4
+    and on the CPU."""
+    if device.startswith("cuda"):
+        return torch.cuda.get_device_capability()[0] >= 8
+    return device == "mps"
+
+
 class VLMOCR:
     """
     VLM-based OCR implementation (using lightweight models)
@@ -38,7 +56,7 @@ class VLMOCR:
             raise ImportError("VLMOCR needs the vlm extra: pip install 'frame2text4llm[vlm]'")
         self.model_name = model_name
         self.prompt = prompt
-        self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
+        self.device = pick_device()
         self.torch_dtype = torch.float16 if self.device.startswith("cuda") else torch.float32
         self.model = None
         self.processor = None
@@ -90,9 +108,7 @@ class VLMOCR:
                 else:  # any image-text-to-text model of transformers, such as Qwen3-VL
                     from transformers import AutoModelForImageTextToText
 
-                    # bfloat16 where the GPU has it (compute capability 8 and up), float32 elsewhere,
-                    # as measured on a T4
-                    bf16 = self.device.startswith("cuda") and torch.cuda.get_device_capability()[0] >= 8
+                    bf16 = reads_bfloat16(self.device)
                     self.processor = AutoProcessor.from_pretrained(self.model_name)
                     self.model = AutoModelForImageTextToText.from_pretrained(
                         self.model_name,

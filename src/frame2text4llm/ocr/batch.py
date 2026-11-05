@@ -5,6 +5,7 @@ from typing import Any
 from loguru import logger
 from tqdm import tqdm
 
+from .utils.filters import strip_overlays
 from .utils.text_utils import _merge_segments
 
 
@@ -91,6 +92,7 @@ class OCRBatchProcessor:
         description: str = "🔠 OCR Processing",
         merge_segments: bool = False,
         sim_thresh: float = 0.8,
+        overlay_frames: int | None = None,
     ) -> list[dict[str, Any]]:
         """
         Run OCR on a batch of video frames using parallel processing.
@@ -108,6 +110,8 @@ class OCRBatchProcessor:
             description: Description for the progress bar
             merge_segments: Whether to merge similar consecutive segments
             sim_thresh: Similarity threshold for merging (0.0-1.0)
+            overlay_frames: Take out the words read on this many frames in a row or more (logos, banners),
+                before merging; 60 is 30 s at 2 frames a second. None keeps them.
 
         Returns:
             List of dicts with frame metadata and extracted text
@@ -162,6 +166,9 @@ class OCRBatchProcessor:
 
         succeeded = sum(1 for r in results if r.get("success", False))
         logger.info(f"Completed OCR processing. Success rate: {succeeded}/{len(results)}")
+
+        if overlay_frames:
+            strip_overlays(results, frames=overlay_frames)
 
         # if merge segments
         if merge_segments:

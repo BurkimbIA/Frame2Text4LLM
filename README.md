@@ -4,8 +4,6 @@
 [![Tests](https://github.com/BurkimbIA/Frame2Text4LLM/actions/workflows/tests.yml/badge.svg)](https://github.com/BurkimbIA/Frame2Text4LLM/actions/workflows/tests.yml)
 [![Docs](https://img.shields.io/badge/docs-github%20pages-orange)](https://burkimbia.github.io/Frame2Text4LLM/)
 
-**By Alban Nyantudre and Salif Sawadogo**, for [BurkimbIA](https://huggingface.co/burkimbia).
-
 Read the subtitles burned into a video with OCR, find when each one starts and ends, and cut the
 audio underneath. What comes out is pairs of speech and text, for speech recognition or speech
 translation datasets in languages that have few of them.

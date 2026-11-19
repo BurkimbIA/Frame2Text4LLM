@@ -75,6 +75,16 @@ uv run --only-group docs mkdocs serve
 
 To release, follow [RELEASE.md](RELEASE.md).
 
+## Acknowledgements
+
+Frame2Text4LLM is built on open tools, and we thank their authors. OpenCV reads the frames. EasyOCR,
+PaddleOCR and, through Hugging Face Transformers, Qwen3-VL, Florence-2 and InternVL2 read the
+subtitles. MMS-LID, from Meta, says which language is spoken. RapidFuzz finds copies, pytubefix
+downloads videos and ffmpeg cuts the audio.
+
+Each tool and model keeps its own licence. The MMS-LID weights (`facebook/mms-lid-256`, used by the
+`lid` extra) are under CC BY-NC 4.0: non-commercial use only.
+
 ## Authors
 
 - **Alban Nyantudre** ([GitHub](https://github.com/anyantudre))

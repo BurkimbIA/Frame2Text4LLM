@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## v0.2.1 - 2026-11-19
 
+### Added
+
+- An Acknowledgements section in the README: the open tools the pipeline uses, and the CC BY-NC 4.0
+  licence of the MMS-LID weights that the `lid` extra downloads.
+
 ### Changed
 
 - The contact address is contact@burkimbia.com: in the PyPI metadata, the README and `__email__`.

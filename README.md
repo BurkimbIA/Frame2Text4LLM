@@ -4,8 +4,6 @@
 [![Tests](https://github.com/BurkimbIA/Frame2Text4LLM/actions/workflows/tests.yml/badge.svg)](https://github.com/BurkimbIA/Frame2Text4LLM/actions/workflows/tests.yml)
 [![Docs](https://img.shields.io/badge/docs-github%20pages-orange)](https://burkimbia.github.io/Frame2Text4LLM/)
 
-**By Alban Nyantudre and Salif Sawadogo**, for [BurkimbIA](https://huggingface.co/burkimbia).
-
 Read the subtitles burned into a video with OCR, find when each one starts and ends, and cut the
 audio underneath. What comes out is pairs of speech and text, for speech recognition or speech
 translation datasets in languages that have few of them.
@@ -75,9 +73,20 @@ uv run --only-group docs mkdocs serve
 
 To release, follow [RELEASE.md](RELEASE.md).
 
+## Acknowledgements
+
+Frame2Text4LLM is built on open tools, and we thank their authors. OpenCV reads the frames. EasyOCR,
+PaddleOCR and, through Hugging Face Transformers, Qwen3-VL, Florence-2 and InternVL2 read the
+subtitles. MMS-LID, from Meta, says which language is spoken. RapidFuzz finds copies, pytubefix
+downloads videos and ffmpeg cuts the audio.
+
+Frame2Text4LLM itself is under the MIT licence. The tools and models it uses keep their own licences,
+so check a model's card before using it commercially: the MMS-LID weights that the `lid` extra
+downloads, for instance, are under CC BY-NC 4.0.
+
 ## Authors
 
 - **Alban Nyantudre** ([GitHub](https://github.com/anyantudre))
 - **Salif Sawadogo** ([GitHub](https://github.com/sawallesalfo))
 
-Contact: frame2text4llm@gmail.com. MIT licence.
+Contact: contact@burkimbia.com. MIT licence.

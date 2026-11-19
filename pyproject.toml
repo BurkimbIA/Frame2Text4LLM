@@ -1,6 +1,6 @@
 [project]
 name = "frame2text4llm"
-version = "0.1.0"
+version = "0.2.0"
 description = "Read the subtitles burned into a video with OCR, and cut the audio under each one, to build speech and text datasets."
 readme = "README.md"
 license = "MIT"

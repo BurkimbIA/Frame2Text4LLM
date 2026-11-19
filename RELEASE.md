@@ -85,12 +85,17 @@ gh release create vX.Y.Z --title "vX.Y.Z" --generate-notes
 
 ## Publish to PyPI
 
-Run the *Publish to PyPI* workflow by hand on `main`, once the tag is pushed:
+Pushing the tag runs [`python-publish.yml`](.github/workflows/python-publish.yml): it checks that the tag is `v` +
+`project.version`, builds the sdist and wheel with `uv build`, checks them with `twine`, and publishes them to PyPI
+through trusted publishing.
 
-```bash
-gh workflow run python-publish.yml --ref main
-```
+One-time setup, before the first release:
 
-[`python-publish.yml`](.github/workflows/python-publish.yml) builds the sdist and wheel with `uv build`, checks them
-with `twine`, and publishes them to PyPI through trusted publishing. PyPI must trust `BurkimbIA/Frame2Text4LLM`, the
-repository this workflow now runs in.
+- On PyPI, add a trusted publisher for the project `frame2text4llm`: owner `BurkimbIA`, repository
+  `Frame2Text4LLM`, workflow `python-publish.yml`, environment `pypi` (a "pending publisher" if the project does
+  not exist yet).
+- On GitHub, create the `pypi` environment (Settings → Environments), optionally with required reviewers so that
+  each upload waits for an approval.
+
+After the workflow succeeds, confirm that https://pypi.org/project/frame2text4llm/ shows the new version and that
+`pip install frame2text4llm==X.Y.Z` installs it.

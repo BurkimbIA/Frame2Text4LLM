@@ -10,7 +10,7 @@ authors = [
     { name = "Salif SAWADOGO" },
 ]
 maintainers = [
-    { name = "Alban NYANTUDRE, Salif SAWADOGO", email = "frame2text4llm@gmail.com" },
+    { name = "Alban NYANTUDRE, Salif SAWADOGO", email = "contact@burkimbia.com" },
 ]
 requires-python = ">=3.10"
 keywords = ["ocr", "subtitles", "video", "speech", "dataset"]

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- The contact address is contact@burkimbia.com: in the PyPI metadata, the README and `__email__`.
+
 ## v0.2.0 - 2026-11-19
 
 First release on PyPI.

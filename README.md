@@ -80,4 +80,4 @@ To release, follow [RELEASE.md](RELEASE.md).
 - **Alban Nyantudre** ([GitHub](https://github.com/anyantudre))
 - **Salif Sawadogo** ([GitHub](https://github.com/sawallesalfo))
 
-Contact: frame2text4llm@gmail.com. MIT licence.
+Contact: contact@burkimbia.com. MIT licence.

@@ -82,8 +82,9 @@ PaddleOCR and, through Hugging Face Transformers, Qwen3-VL, Florence-2 and Inter
 subtitles. MMS-LID, from Meta, says which language is spoken. RapidFuzz finds copies, pytubefix
 downloads videos and ffmpeg cuts the audio.
 
-Each tool and model keeps its own licence. The MMS-LID weights (`facebook/mms-lid-256`, used by the
-`lid` extra) are under CC BY-NC 4.0: non-commercial use only.
+Frame2Text4LLM itself is under the MIT licence. The tools and models it uses keep their own licences,
+so check a model's card before using it commercially: the MMS-LID weights that the `lid` extra
+downloads, for instance, are under CC BY-NC 4.0.
 
 ## Authors
 
